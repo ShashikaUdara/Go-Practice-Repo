@@ -59,6 +59,17 @@ func main() {
 		isValidTicketNumber := userTickets > 0 && userTickets <= remainingTickets
 		isValidCity := city == "Colombo" || city == "Kandy"
 
+		switch city {
+		case "Colombo", "Panadura":
+			// execute code for both colombo and panadura
+			fmt.Println("Colombo or Panadura")
+		case "Kandy", "Matale":
+			// execute code for both colombo and panadura
+			fmt.Println("Kandy or Matale")
+		default:
+			fmt.Println("You enterd a wrong city")
+		}
+
 		if isValidUser && isValidEmail && isValidTicketNumber && isValidCity {
 			bookings = append(bookings, firstName+" "+lastName)
 
