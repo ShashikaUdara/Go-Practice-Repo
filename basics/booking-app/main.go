@@ -27,6 +27,8 @@ func main() {
 	// var bookings = []string{} // or
 	// bookings := []string[] // this
 
+	// function
+
 	for {
 		var firstName string
 		var lastName string
@@ -75,9 +77,11 @@ func main() {
 
 			remainingTickets = remainingTickets - userTickets
 
+			greetUser(conferenceName, remainingTickets, firstName, lastName, userTickets, email)
+
 			// userName = "Udara"
-			fmt.Printf("Thank you %v %v for booking %v tickets. You will revceve a confirmation email at %v.\n", firstName, lastName, userTickets, email)
-			fmt.Printf("%v tickets are remaining for %v\n", remainingTickets, conferenceName)
+			// fmt.Printf("Thank you %v %v for booking %v tickets. You will revceve a confirmation email at %v.\n", firstName, lastName, userTickets, email)
+			// fmt.Printf("%v tickets are remaining for %v\n", remainingTickets, conferenceName)
 
 			firstNames := []string{}
 			for _, booking := range bookings {
@@ -114,4 +118,10 @@ func main() {
 			continue
 		}
 	}
+}
+
+func greetUser(confName string, remainingTickets uint, firstName string, lastName string, userTickets uint, email string) {
+	fmt.Printf("Welcome to our %v", confName)
+	fmt.Printf("Thank you %v %v for booking %v tickets. You will revceve a confirmation email at %v.\n", firstName, lastName, userTickets, email)
+	fmt.Printf("%v tickets are remaining for %v\n", remainingTickets, confName)
 }
