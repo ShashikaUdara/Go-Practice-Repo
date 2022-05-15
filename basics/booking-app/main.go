@@ -3,6 +3,7 @@ package main
 import (
 	"booking-app/helper"
 	"fmt"
+	"time"
 )
 
 // package level variables (Not global) : normaly this is a bad practice
@@ -67,7 +68,7 @@ func main() {
 		if isValidUser && isValidEmail && isValidTicketNumber && isValidCity {
 			// booking ticket
 			bookings, remainingTickets = bookTicket(firstName, lastName, userTickets, email)
-
+			go sendTicket(userTickets, firstName, lastName, email)
 			// greeting to user
 			greetUser(conferenceName)
 
@@ -179,4 +180,14 @@ func bookTicket(firstName string, lastName string, userTickets uint, email strin
 	// fmt.Printf("\n\nList of bookings is %v\n\n", bookings[0]["firstName"]) // accessing only the first name of the firast element
 	fmt.Printf("\n\nList of bookings is %v\n\n", bookings)
 	return bookings, remainingTickets
+}
+
+func sendTicket(userTickets uint, firstName string, lastName string, email string) {
+	// adding a time dealy
+	time.Sleep(10 * time.Second)
+	// creating a formated string
+	var ticket = fmt.Sprintf("%v tickets for %v %v\n", userTickets, firstName, lastName)
+	fmt.Println("#######################")
+	fmt.Printf("Sendint ticket:\n\t%vTo email address %v\n", ticket, email)
+	fmt.Println("#######################")
 }
