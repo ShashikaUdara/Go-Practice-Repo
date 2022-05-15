@@ -1,8 +1,9 @@
-package main
+package helper
 
 import "strings"
 
-func validateUserInput(firstName string, lastName string, email string, userTickets uint, city string) (bool, bool, bool, bool) {
+// we can make the function global by changing the function name first letter capital
+func ValidateUserInput(firstName string, lastName string, email string, userTickets uint, city string, remainingTickets uint) (bool, bool, bool, bool) {
 	isValidUser := len(firstName) >= 2 && len(lastName) >= 2
 	isValidEmail := strings.Contains(email, "@")
 	isValidTicketNumber := userTickets > 0 && userTickets <= remainingTickets

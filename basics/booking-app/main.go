@@ -1,11 +1,12 @@
 package main
 
 import (
+	"booking-app/helper"
 	"fmt"
 	"strings"
 )
 
-// package level variables : normaly this is a bad practice
+// package level variables (Not global) : normaly this is a bad practice
 // define variables as much as possible in locally, not in publicaly
 const conferenceTickets uint = 50
 
@@ -52,7 +53,7 @@ func main() {
 		}
 
 		// validating the user inputs
-		isValidUser, isValidEmail, isValidTicketNumber, isValidCity := validateUserInput(firstName, lastName, email, userTickets, city)
+		isValidUser, isValidEmail, isValidTicketNumber, isValidCity := helper.ValidateUserInput(firstName, lastName, email, userTickets, city, remainingTickets)
 
 		if isValidUser && isValidEmail && isValidTicketNumber && isValidCity {
 			// booking ticket
