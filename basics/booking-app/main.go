@@ -3,6 +3,7 @@ package main
 import (
 	"booking-app/helper"
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -23,6 +24,8 @@ type UserData struct {
 	email           string
 	numberOfTickets uint
 }
+
+var wg = sync.WaitGroup{}
 
 func main() {
 	// function level variables
@@ -68,6 +71,8 @@ func main() {
 		if isValidUser && isValidEmail && isValidTicketNumber && isValidCity {
 			// booking ticket
 			bookings, remainingTickets = bookTicket(firstName, lastName, userTickets, email)
+			// wg.Add(Number of threads) // sets no of goroutings to wait for
+			wg.Add(1)
 			go sendTicket(userTickets, firstName, lastName, email)
 			// greeting to user
 			greetUser(conferenceName)
@@ -109,6 +114,8 @@ func main() {
 			continue
 		}
 	}
+
+	wg.Wait()
 }
 
 func greetUser(confName string) {
@@ -184,10 +191,12 @@ func bookTicket(firstName string, lastName string, userTickets uint, email strin
 
 func sendTicket(userTickets uint, firstName string, lastName string, email string) {
 	// adding a time dealy
-	time.Sleep(10 * time.Second)
+	time.Sleep(50 * time.Second)
 	// creating a formated string
 	var ticket = fmt.Sprintf("%v tickets for %v %v\n", userTickets, firstName, lastName)
 	fmt.Println("#######################")
 	fmt.Printf("Sendint ticket:\n\t%vTo email address %v\n", ticket, email)
 	fmt.Println("#######################")
+
+	wg.Done()
 }
