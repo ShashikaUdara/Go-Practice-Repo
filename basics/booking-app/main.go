@@ -3,7 +3,7 @@ package main
 import (
 	"booking-app/helper"
 	"fmt"
-	"strings"
+	"strconv"
 )
 
 // package level variables (Not global) : normaly this is a bad practice
@@ -12,7 +12,7 @@ const conferenceTickets uint = 50
 
 var conferenceName string = "Go Conference"
 var remainingTickets uint = 50
-var bookings []string
+var bookings = make([]map[string]string, 0) // criating a empty slize of map
 
 func main() {
 	// function level variables
@@ -108,8 +108,8 @@ func greetUser(confName string) {
 func getFirstNames() []string {
 	firstNames := []string{}
 	for _, booking := range bookings {
-		var names = strings.Fields(booking)
-		firstNames = append(firstNames, names[0])
+		// var names = strings.Fields(booking)
+		firstNames = append(firstNames, booking["firstName"])
 	}
 
 	// fmt.Printf("First names in Bookings %v\n\n", firstNames)
@@ -145,11 +145,23 @@ func getUserInput() (string, string, string, string, uint) {
 	return firstName, lastName, email, city, userTickets
 }
 
-func bookTicket(firstName string, lastName string, userTickets uint, email string) ([]string, uint) {
-	bookings = append(bookings, firstName+" "+lastName)
+func bookTicket(firstName string, lastName string, userTickets uint, email string) ([]map[string]string, uint) {
+	// storing user data in a map
+	// var myMap map[string]string // or
+	var userData = make(map[string]string) // make stands to create the empty map
+	userData["firstName"] = firstName
+	userData["lastName"] = lastName
+	userData["email"] = email
+
+	// we need to cast userTickets to add into userData map
+	userData["userTickets"] = strconv.FormatUint(uint64(userTickets), 10)
+
+	bookings = append(bookings, userData)
 	remainingTickets = remainingTickets - userTickets
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will revceve a confirmation email at %v.\n", firstName, lastName, userTickets, email)
 	fmt.Printf("%v tickets are remaining for %v\n", remainingTickets, conferenceName)
 
+	// fmt.Printf("\n\nList of bookings is %v\n\n", bookings[0]["firstName"]) // accessing only the first name of the firast element
+	fmt.Printf("\n\nList of bookings is %v\n\n", bookings)
 	return bookings, remainingTickets
 }
