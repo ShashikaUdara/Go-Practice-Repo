@@ -3,7 +3,6 @@ package main
 import (
 	"booking-app/helper"
 	"fmt"
-	"strconv"
 )
 
 // package level variables (Not global) : normaly this is a bad practice
@@ -12,7 +11,17 @@ const conferenceTickets uint = 50
 
 var conferenceName string = "Go Conference"
 var remainingTickets uint = 50
-var bookings = make([]map[string]string, 0) // criating a empty slize of map
+
+// var bookings = []string // criating a empty slize of string
+// var bookings = make([]map[string]string, 0) // criating a empty slize of map
+var bookings = make([]UserData, 0) // criating a empty slize of map
+
+type UserData struct {
+	firstName       string
+	lastName        string
+	email           string
+	numberOfTickets uint
+}
 
 func main() {
 	// function level variables
@@ -109,7 +118,7 @@ func getFirstNames() []string {
 	firstNames := []string{}
 	for _, booking := range bookings {
 		// var names = strings.Fields(booking)
-		firstNames = append(firstNames, booking["firstName"])
+		firstNames = append(firstNames, booking.firstName)
 	}
 
 	// fmt.Printf("First names in Bookings %v\n\n", firstNames)
@@ -145,17 +154,23 @@ func getUserInput() (string, string, string, string, uint) {
 	return firstName, lastName, email, city, userTickets
 }
 
-func bookTicket(firstName string, lastName string, userTickets uint, email string) ([]map[string]string, uint) {
-	// storing user data in a map
+func bookTicket(firstName string, lastName string, userTickets uint, email string) ([]UserData, uint) {
+	// storing user data in a map, used to store similar type of data. (this case strings only)
 	// var myMap map[string]string // or
-	var userData = make(map[string]string) // make stands to create the empty map
-	userData["firstName"] = firstName
-	userData["lastName"] = lastName
-	userData["email"] = email
-
+	// var userData = make(map[string]string) // make stands to create the empty map
+	// userData["firstName"] = firstName
+	// userData["lastName"] = lastName
+	// userData["email"] = email
 	// we need to cast userTickets to add into userData map
-	userData["userTickets"] = strconv.FormatUint(uint64(userTickets), 10)
+	// userData["userTickets"] = strconv.FormatUint(uint64(userTickets), 10)
 
+	// insterd of map here we use structure
+	var userData = UserData{
+		firstName:       firstName,
+		lastName:        lastName,
+		email:           email,
+		numberOfTickets: userTickets,
+	}
 	bookings = append(bookings, userData)
 	remainingTickets = remainingTickets - userTickets
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will revceve a confirmation email at %v.\n", firstName, lastName, userTickets, email)
